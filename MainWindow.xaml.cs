@@ -35,76 +35,89 @@ namespace Pokedex
         public MainWindow()
         {
             InitializeComponent();
-            BindCardList();
+
+            
+            bool completeInitializeCard = InitializeCardList().IsCompleted;
+
+            //Binding List
+            if (completeInitializeCard)
+            {
+                List<CardClass> CardList = InitializeCardList().Result;
+                cardListView.ItemsSource = CardList;
+            }
+
         }
 
         public class CardClass
         {
-            public string? id { get; set; } // Id
-            public string? name { get; set; }   // Name
+            public int id { get; set; } // Id of element
+            public string idCard { get; set; } // Id
+            public string name { get; set; }   // Name
             public int hp { get; set; } // Hp
             public string attackName { get; set; } // Attack[0].Name
             public int attackDamage { get; set; } // Attack[0].Damage
-            public string rarity { get; set; }  //Rarity
+            public string rarity { get; set; }  // Rarity
+            public string series { get; set; } // Series
             public string images { get; set; } //ImageUrlHires
 
-            public CardClass(string cId, string cName, int cHp, string cAttackName, int cAttackDamage, string cRarity, string cImages)
+            public CardClass(int cId, string cIdCard, string cName, int cHp, string cAttackName, int cAttackDamage, string cRarity, string cSeries, string cImages)
             {
                 id = cId;
+                idCard = cIdCard;
                 name = cName;
                 hp = cHp;
                 attackName = cAttackName;
                 attackDamage = cAttackDamage;
                 rarity = cRarity;
                 images = cImages;
+                series = cSeries;
             }
         }
-        public List<CardClass> CardList = null;
 
-        private async void BindCardList()
+        public async Task<List<CardClass>> InitializeCardList() 
         {
-            //grdCards.ItemsSource = ;
-            //TextCard.Text = ;
 
-            
+            List<CardClass> CardList = new List<CardClass>();
+
             var cards = Card.All().ToArray();
             int size = cards.Length;
-            
+            int tempHp, tempAttackDamage, id = 0, idsum = 0;
 
             
-
-            // -----------------------------------------
-            /*
-            int size = cards.Length;
-            StringBuilder sb = new StringBuilder();
-
-
-
-            foreach (var item in cards)
+            for (var i = 0; i < size; i++)
             {
-                sb.Append(item.Name + '\n');
-            }*/
-            /*
-            for (int i = 0; i < size; i++)
-            {
-                sb.AppendFormat( "{0}. {1} \n", i, cards[i].Name);
+                if (cards[i].SuperType == "Pokémon" && cards[i].SubType != "Stage 1" && cards[i].Series == "XY" && cards[i].EvolvesFrom == "-")
+                {
+                    tempHp = cards[i].Hp == "None" ? 0 : Convert.ToInt32(cards[i].Hp);
+
+                    if (cards[i].Attacks == null || cards[i].Attacks[0].Damage == "")
+                        tempAttackDamage = 0;
+                    else if (cards[i].Attacks[0].Damage.Contains("×") || 
+                        cards[i].Attacks[0].Damage.Contains("+") ||
+                        cards[i].Attacks[0].Damage.Contains("＋"))
+                        tempAttackDamage = Convert.ToInt32(cards[i].Attacks[0].Damage.Replace("×", "").Replace("+", "").Replace("＋",""));
+                    else
+                        tempAttackDamage = Convert.ToInt32(cards[i].Attacks[0].Damage);
+
+                    var mObj = new CardClass(
+                        id,
+                        cards[i].Id,
+                        cards[i].Name,
+                        tempHp,
+                        cards[i].Attacks[0].Name,
+                        tempAttackDamage,
+                        cards[i].Rarity,
+                        cards[i].Series,
+                        cards[i].ImageUrlHiRes);
+
+                    CardList.Add(mObj);
+                    id++;
+                }
+                idsum += 1;
+                
+                
             }
-
-            string app_ouput = sb.ToString();
-            tbMultiLine.Text = app_ouput;
-            */
-            // ------------------------------------------
-            /*
-            var cards = Card.All().ToArray();
-            int size = cards.Length;
-            string[] numA = new string[size];
-
-            for(int i = 0; i < size; i++)
-            {
-                numA[i] = cards[i].Name;
-            }
-            tbMultiLine.Text = string.Join("\n", numA).ToString();
-            */
+            return CardList;
 
 
         }

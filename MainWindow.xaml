@@ -10,7 +10,28 @@
 
         <Grid Margin="10,0,2,89">
 
-            <DataGrid Width="400" HorizontalAlignment="Left" VerticalAlignment="Top" x:Name="grdCards" />
+            <Grid>
+                <ListView Margin="10" Name="cardListView" ItemsSource="{Binding CardList}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <WrapPanel>
+                                <TextBlock Text="Id: " FontWeight="Bold"/>
+                                <TextBlock Text="{Binding id}" />
+                                <TextBlock Text=" Name: " FontWeight="Bold"/>
+                                <TextBlock Text="{Binding name}" />
+                                <TextBlock Text=" Hp: " FontWeight="Bold"/>
+                                <TextBlock Text="{Binding hp}" />
+                                <TextBlock Text=" Attack name: " FontWeight="Bold"/>
+                                <TextBlock Text="{Binding attackDamage}" />
+                                <TextBlock Text=" Rarity: " FontWeight="Bold"/>
+                                <TextBlock Text="{Binding rarity}" />
+                            </WrapPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+
+            <!--<DataGrid Width="400" HorizontalAlignment="Left" VerticalAlignment="Top" x:Name="grdCards" />
             <TextBox Width="400" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" x:Name="TextCard"/>
             
 
@@ -22,7 +43,7 @@
             >
             Test
             </TextBox>
-            
+            -->
             
         </Grid>
         
