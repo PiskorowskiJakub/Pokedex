@@ -22,9 +22,16 @@
                                 <TextBlock Text=" Hp: " FontWeight="Bold"/>
                                 <TextBlock Text="{Binding hp}" />
                                 <TextBlock Text=" Attack name: " FontWeight="Bold"/>
+                                <TextBlock Text="{Binding attackName}" />
+                                <TextBlock Text=" Attack damage: " FontWeight="Bold"/>
                                 <TextBlock Text="{Binding attackDamage}" />
                                 <TextBlock Text=" Rarity: " FontWeight="Bold"/>
                                 <TextBlock Text="{Binding rarity}" />
+                                <TextBlock Text=" Series: " FontWeight="Bold"/>
+                                <TextBlock Text="{Binding series}" />
+                                <TextBlock Text=" Image: " FontWeight="Bold"/>
+                                <Image Source="{Binding image}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0" />
+
                             </WrapPanel>
                         </DataTemplate>
                     </ListView.ItemTemplate>

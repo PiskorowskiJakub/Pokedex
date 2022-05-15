@@ -58,7 +58,7 @@ namespace Pokedex
             public int attackDamage { get; set; } // Attack[0].Damage
             public string rarity { get; set; }  // Rarity
             public string series { get; set; } // Series
-            public string images { get; set; } //ImageUrlHires
+            public string image { get; set; }   //ImageUrlHires
 
             public CardClass(int cId, string cIdCard, string cName, int cHp, string cAttackName, int cAttackDamage, string cRarity, string cSeries, string cImages)
             {
@@ -69,12 +69,12 @@ namespace Pokedex
                 attackName = cAttackName;
                 attackDamage = cAttackDamage;
                 rarity = cRarity;
-                images = cImages;
+                image = cImages;
                 series = cSeries;
             }
         }
 
-        public async Task<List<CardClass>> InitializeCardList() 
+        public Task<List<CardClass>> InitializeCardList() 
         {
 
             List<CardClass> CardList = new List<CardClass>();
@@ -82,16 +82,21 @@ namespace Pokedex
             var cards = Card.All().ToArray();
             int size = cards.Length;
             int tempHp, tempAttackDamage, id = 0, idsum = 0;
+            string tempAttackName = "-";
 
-            
             for (var i = 0; i < size; i++)
             {
-                if (cards[i].SuperType == "Pokémon" && cards[i].SubType != "Stage 1" && cards[i].Series == "XY" && cards[i].EvolvesFrom == "-")
+                tempAttackName = "-";
+                if (cards[i].SuperType == "Pokémon" &&  
+                    cards[i].Series == "Base" && 
+                    cards[i].EvolvesFrom == "-" && 
+                    cards[i].Rarity != null)
                 {
-                    tempHp = cards[i].Hp == "None" ? 0 : Convert.ToInt32(cards[i].Hp);
-
-                    if (cards[i].Attacks == null || cards[i].Attacks[0].Damage == "")
+                    
+                    if (cards[i].Attacks == null || cards[i].Attacks[0].Damage == ""){
+                        tempAttackName = " ";
                         tempAttackDamage = 0;
+                    }
                     else if (cards[i].Attacks[0].Damage.Contains("×") || 
                         cards[i].Attacks[0].Damage.Contains("+") ||
                         cards[i].Attacks[0].Damage.Contains("＋"))
@@ -99,12 +104,15 @@ namespace Pokedex
                     else
                         tempAttackDamage = Convert.ToInt32(cards[i].Attacks[0].Damage);
 
+                    tempAttackName = tempAttackName == " " ? " " : cards[i].Attacks[0].Name;
+                    tempHp = cards[i].Hp == "None" ? 0 : Convert.ToInt32(cards[i].Hp);
+
                     var mObj = new CardClass(
                         id,
                         cards[i].Id,
                         cards[i].Name,
                         tempHp,
-                        cards[i].Attacks[0].Name,
+                        tempAttackName,
                         tempAttackDamage,
                         cards[i].Rarity,
                         cards[i].Series,
@@ -117,7 +125,8 @@ namespace Pokedex
                 
                 
             }
-            return CardList;
+
+            return Task.FromResult(CardList);
 
 
         }
