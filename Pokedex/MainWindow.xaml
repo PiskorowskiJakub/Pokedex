@@ -24,10 +24,10 @@
         </Grid.RowDefinitions>
 
 
+        <TextBlock Grid.Column="1" Grid.Row="1" Text="..." Name="TextWaiting" FontWeight="Bold"/>
         
         
-        
-        <ListView BorderBrush="{StaticResource border}" Grid.Column="1" Grid.Row="1" Margin="10" Name="cardListView" ItemsSource="{Binding CardList}" d:ItemsSource="{d:SampleData ItemCount=5}">
+        <ListView BorderBrush="{StaticResource border}" Grid.Column="1" Grid.Row="1" Margin="10, 30" Name="cardListView" ItemsSource="{Binding CardList}" d:ItemsSource="{d:SampleData ItemCount=5}">
             <ListView.ItemTemplate>
                 <DataTemplate>
                    

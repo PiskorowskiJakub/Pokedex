@@ -1,29 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
-
-using System.Data;
-using Newtonsoft.Json;
-using System.Text.Json.Nodes;
-using Newtonsoft.Json.Linq;
-
 using PokemonTcgSdk;
-using PokemonTcgSdk.Models;
 
 namespace Pokedex
 {
@@ -33,7 +12,7 @@ namespace Pokedex
         {
             InitializeComponent();
 
-
+            //TextWaiting.Text = "Pobieranie danych 1...";
             bool completeInitializeCard = InitializeCardList().IsCompleted;
 
             //Binding List
@@ -41,6 +20,16 @@ namespace Pokedex
             {
                 List<CardClass> CardList = InitializeCardList().Result;
                 cardListView.ItemsSource = CardList;
+
+                //while (CardList.Count < 0)
+                //{
+
+                //    TextWaiting.Text = "Pobieranie danych 2...";
+                //    InitializeCardList();
+                //    CardList = InitializeCardList().Result;
+                //}
+
+
             }
 
         }
@@ -71,7 +60,7 @@ namespace Pokedex
             }
         }
 
-        public Task<List<CardClass>> InitializeCardList() 
+        public Task<List<CardClass>> InitializeCardList()
         {
 
             List<CardClass> CardList = new List<CardClass>();
@@ -84,20 +73,21 @@ namespace Pokedex
             for (var i = 0; i < size; i++)
             {
                 tempAttackName = "-";
-                if (cards[i].SuperType == "Pokémon" &&  
-                    cards[i].Series == "Base" && 
-                    cards[i].EvolvesFrom == "-" && 
+                if (cards[i].SuperType == "Pokémon" &&
+                    cards[i].Series == "Base" &&
+                    cards[i].EvolvesFrom == "-" &&
                     cards[i].Rarity != null)
                 {
-                    
-                    if (cards[i].Attacks == null || cards[i].Attacks[0].Damage == ""){
+
+                    if (cards[i].Attacks == null || cards[i].Attacks[0].Damage == "")
+                    {
                         tempAttackName = " ";
                         tempAttackDamage = 0;
                     }
-                    else if (cards[i].Attacks[0].Damage.Contains("×") || 
+                    else if (cards[i].Attacks[0].Damage.Contains("×") ||
                         cards[i].Attacks[0].Damage.Contains("+") ||
                         cards[i].Attacks[0].Damage.Contains("＋"))
-                        tempAttackDamage = Convert.ToInt32(cards[i].Attacks[0].Damage.Replace("×", "").Replace("+", "").Replace("＋",""));
+                        tempAttackDamage = Convert.ToInt32(cards[i].Attacks[0].Damage.Replace("×", "").Replace("+", "").Replace("＋", ""));
                     else
                         tempAttackDamage = Convert.ToInt32(cards[i].Attacks[0].Damage);
 
@@ -119,8 +109,8 @@ namespace Pokedex
                     id++;
                 }
                 idsum += 1;
-                
-                
+
+
             }
 
             return Task.FromResult(CardList);
@@ -128,5 +118,5 @@ namespace Pokedex
 
         }
     }
-   
+
 }
