@@ -4,11 +4,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Pokedex"
+        xmlns:fa="http://schemas.fontawesome.io/icons/"
         mc:Ignorable="d"
-        Title="Pokedex" Height="550" Width="800">
+        Title="Pokedex" Height="750" Width="800">
 
 
-    
+
     <Grid Margin="10,10,10,39">
         <Grid.Resources>
             <SolidColorBrush x:Key="border"  Color="Blue"/>
@@ -23,57 +24,72 @@
             <RowDefinition Height="1*" />
         </Grid.RowDefinitions>
 
+        <Grid Grid.Column="1" Grid.Row="1">
+            <StackPanel Grid.ColumnSpan="2">
+                <RadioButton Name="detailedView">Widok szczegółowy</RadioButton>
+                <RadioButton Name="listView">Widok listy</RadioButton>
+                <RadioButton Name="generalView">Widok ogólny</RadioButton>
+                <StackPanel Orientation="Horizontal">
+                    <Button Click="changeView" Width="200" Margin="5">Zmień widok</Button>
+                    <Button Click="reloadData" Width="200" Margin="5">Załaduj karty</Button>
+                    <fa:ImageAwesome Name="loadingSpinner" Visibility="Collapsed" Icon="Spinner" Spin="True" SpinDuration="2" Height="20"/>
+                </StackPanel>
+            </StackPanel>
 
-        <TextBlock Grid.Column="1" Grid.Row="1" Text="..." Name="TextWaiting" FontWeight="Bold"/>
-        
-        
-        <ListView BorderBrush="{StaticResource border}" Grid.Column="1" Grid.Row="1" Margin="10, 30" Name="cardListView" ItemsSource="{Binding CardList}" d:ItemsSource="{d:SampleData ItemCount=5}">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                   
+            <ListView BorderBrush="{StaticResource border}" 
+                      Margin="10,90,10,0" Name="cardListView"
+                      ItemsSource="{Binding CardList}" 
+                      d:ItemsSource="{d:SampleData ItemCount=4}"
+                      Visibility="Collapsed"
+                      ScrollViewer.VerticalScrollBarVisibility="Visible"
+                      ScrollViewer.CanContentScroll="True" Height="403" VerticalAlignment="Top">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
 
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="7*" />
-                            <RowDefinition Height="1*" />
-                            <RowDefinition Height="1*" />
-                            <RowDefinition Height="1*" />
-                            <RowDefinition Height="1*" />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="1*" />
-                            <ColumnDefinition Width="2*" />
-                            <ColumnDefinition Width="1*" />
-                            <ColumnDefinition Width="2*" />
-                        </Grid.ColumnDefinitions>
-                    
 
-                    <Image Grid.ColumnSpan="4" Grid.Row="0" Source="{Binding image}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0" />
-                        <TextBlock Grid.Column="0" Grid.Row="1" Text="Id: " FontWeight="Bold"/>
-                        <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding id}" />
-                        <TextBlock Grid.Column="0" Grid.Row="2" Text=" Name: " FontWeight="Bold"/>
-                        <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding name}" />
-                        <TextBlock Grid.Column="0" Grid.Row="3" Text=" Hp: " FontWeight="Bold"/>
-                        <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding hp}" />
-                        <TextBlock Grid.Column="0" Grid.Row="4" Text=" Attack name: " FontWeight="Bold"/>
-                        <TextBlock Grid.Column="1" Grid.Row="4" Text="{Binding attackName}" />
-                        <TextBlock Grid.Column="2" Grid.Row="1" Text=" Attack damage: " FontWeight="Bold"/>
-                        <TextBlock Grid.Column="3" Grid.Row="1" Text="{Binding attackDamage}" />
-                        <TextBlock Grid.Column="2" Grid.Row="2" Text=" Rarity: " FontWeight="Bold"/>
-                        <TextBlock Grid.Column="3" Grid.Row="2" Text="{Binding rarity}" />
-                        <TextBlock Grid.Column="2" Grid.Row="3" Text=" Series: " FontWeight="Bold"/>
-                        <TextBlock Grid.Column="3" Grid.Row="3" Text="{Binding series}" />
-                        
-                        
-                    </Grid>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="7*" />
+                                <RowDefinition Height="1*" />
+                                <RowDefinition Height="1*" />
+                                <RowDefinition Height="1*" />
+                                <RowDefinition Height="1*" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="2*" />
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="2*" />
+                            </Grid.ColumnDefinitions>
 
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
 
+                            <Image Grid.ColumnSpan="4" Grid.Row="0" Source="{Binding image}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0" />
+                            <TextBlock Grid.Column="0" Grid.Row="1" Text="Id: " FontWeight="Bold"/>
+                            <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding id}" />
+                            <TextBlock Grid.Column="0" Grid.Row="2" Text=" Name: " FontWeight="Bold"/>
+                            <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding name}" />
+                            <TextBlock Grid.Column="0" Grid.Row="3" Text=" Hp: " FontWeight="Bold"/>
+                            <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding hp}" />
+                            <TextBlock Grid.Column="0" Grid.Row="4" Text=" Attack name: " FontWeight="Bold"/>
+                            <TextBlock Grid.Column="1" Grid.Row="4" Text="{Binding attackName}" />
+                            <TextBlock Grid.Column="2" Grid.Row="1" Text=" Attack damage: " FontWeight="Bold"/>
+                            <TextBlock Grid.Column="3" Grid.Row="1" Text="{Binding attackDamage}" />
+                            <TextBlock Grid.Column="2" Grid.Row="2" Text=" Rarity: " FontWeight="Bold"/>
+                            <TextBlock Grid.Column="3" Grid.Row="2" Text="{Binding rarity}" />
+                            <TextBlock Grid.Column="2" Grid.Row="3" Text=" Series: " FontWeight="Bold"/>
+                            <TextBlock Grid.Column="3" Grid.Row="3" Text="{Binding series}" />
+
+
+                        </Grid>
+
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+        </Grid>
     </Grid>
-    
-    
-   
+
+
+
 
 </Window>

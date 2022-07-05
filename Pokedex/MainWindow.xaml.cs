@@ -1,38 +1,52 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using FontAwesome.WPF;
 using PokemonTcgSdk;
 
 namespace Pokedex
 {
     public partial class MainWindow : Window
     {
+
         public MainWindow()
         {
             InitializeComponent();
 
-            //TextWaiting.Text = "Pobieranie danych 1...";
-            bool completeInitializeCard = InitializeCardList().IsCompleted;
+        }
+        
+        private void changeView(object sender, RoutedEventArgs e)
+        {
+            if (detailedView.IsChecked == true) cardListView.Visibility = Visibility.Visible;
+            else if (listView.IsChecked == true || generalView.IsChecked == true) cardListView.Visibility = Visibility.Collapsed;
+        }
+        private void reloadData(object sender, RoutedEventArgs e)
+        {
+            
+            
 
-            //Binding List
+            loadingSpinner.Visibility = Visibility.Visible;
+            MessageBox.Show("Wczytywanie danych");
+
+
+            var resultCardList = Task.Run(() => InitializeCardList());
+            resultCardList.Wait();
+            bool completeInitializeCard = resultCardList.IsCompleted;
+
             if (completeInitializeCard)
             {
-                List<CardClass> CardList = InitializeCardList().Result;
+                List<CardClass> CardList = resultCardList.Result;
                 cardListView.ItemsSource = CardList;
-
-                //while (CardList.Count < 0)
-                //{
-
-                //    TextWaiting.Text = "Pobieranie danych 2...";
-                //    InitializeCardList();
-                //    CardList = InitializeCardList().Result;
-                //}
-
-
+                MessageBox.Show("Dane wczytane");
+                loadingSpinner.Visibility = Visibility.Collapsed;
+                return;
             }
 
         }
+        
+
 
         public class CardClass
         {
